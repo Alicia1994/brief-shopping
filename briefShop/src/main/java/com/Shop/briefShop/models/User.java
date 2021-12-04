@@ -28,7 +28,6 @@ public class User {
 	private String presentation;
 	private String password;
 	private Long roleId;
-//	private String roleName;
 
 	public User(String username, String email, String presentation, String password) {
 		this.username = username;
@@ -38,12 +37,10 @@ public class User {
 	}
 
 	public User(String username, String email, String presentation, Long role, String encode) {
-//public User(String username, String email, String presentation, String roleName, String encode) {
 	this.username = username;
 		this.email = email;
 		this.presentation = presentation;
 		this.roleId = role;
-//		this.roleName = roleName;
 		this.password = encode;
 
 	}

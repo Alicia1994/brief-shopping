@@ -7,7 +7,6 @@ public class JwtResponse {
 	private String username;
 	private String email;
 	private String presentation;
-//	private String roles;
 	private Long roles;
 
 	public JwtResponse(String accessToken, Long id, String username, String email, String presentation, Long roles) {
@@ -66,10 +65,6 @@ public class JwtResponse {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-	/*public String getRoles() {
-		return roles;
-	}*/
 
 	public Long getRoles() {
 		return roles;

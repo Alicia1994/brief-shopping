@@ -15,7 +15,6 @@ public class Role {
 	private Long id;
 	private String name;
 
-//	@OneToMany(mappedBy = "roleId", cascade = CascadeType.ALL)
 	@OneToMany(mappedBy = "roleId", cascade = CascadeType.ALL)
 	private Set<User> users = new HashSet<>();
 

@@ -18,7 +18,6 @@ public class SignupRequest {
    private String email;
 
    private Long roleId;
-//   private String roleName;
 
     private String presentation;
 

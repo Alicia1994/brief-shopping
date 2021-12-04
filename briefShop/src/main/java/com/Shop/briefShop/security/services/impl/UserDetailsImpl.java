@@ -25,8 +25,6 @@ public class UserDetailsImpl implements UserDetails {
 
 	public UserDetailsImpl(Long id, String username, String email, String presentation, String password,
 			Long authorities) {
-//	public UserDetailsImpl(Long id, String username, String email, String presentation, String password,
-//					   String authorities) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
@@ -37,7 +35,6 @@ public class UserDetailsImpl implements UserDetails {
 
 	public static UserDetailsImpl build(User user) {
 		Long authorities = user.getRoleId();
-//		String authorities = user.getRoleName();
 
 		return new UserDetailsImpl(
 				user.getId(), 
@@ -47,11 +44,6 @@ public class UserDetailsImpl implements UserDetails {
 				user.getPassword(), 
 				authorities);
 	}
-
-/*	@Override
-	public Long getAuthorities() {
-		return authorities;
-	}*/
 
 	public Long getId() {
 		return id;
@@ -65,9 +57,6 @@ public class UserDetailsImpl implements UserDetails {
 		return presentation;
 	}
 
-//	public String getRole(){
-//		return authorities;
-//	}
 	public Long getRole(){
 		return authorities;
 	}
