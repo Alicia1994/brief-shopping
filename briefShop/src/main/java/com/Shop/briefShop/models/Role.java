@@ -13,9 +13,12 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name;
 
-	@OneToMany(mappedBy = "roleId", cascade = CascadeType.ALL)
+	@Enumerated(EnumType.STRING)
+	@Column(length = 20)
+	private ERole name;
+
+	@OneToMany(orphanRemoval = true, mappedBy = "roleId", cascade = CascadeType.ALL)
 	private Set<User> users = new HashSet<>();
 
 }

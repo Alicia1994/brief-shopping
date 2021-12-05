@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public User createNewAdmin(User user, String username){
+    public User createNewEmployé(User user, String username){
         Optional<User> userOptional = userRepository.findByUsername(username);
         User newUser = null;
         Optional<Role> roleAdmin = roleRepository.findByName(ERole.ROLE_ADMIN);
@@ -48,25 +48,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUsersimple(User user) {
-        User userr = modelMapper.map(user, User.class);
-        return userRepository.save(userr);
-    }
-
-    public User updateUser(String username, User user){//nouvelle que je test
-        Optional<User> currentUser = userRepository.findByUsername(username);
-        User userr = modelMapper.map(currentUser, User.class);
-        return userRepository.save(userr);
-    }
-
-    @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
-    }
-
-    @Override
-    public User deleteProject(Long id, String username) {
-        return null;
     }
 
 }

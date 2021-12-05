@@ -19,7 +19,7 @@ public class SignupRequest {
 
    private Long roleId;
 
-    private String presentation;
+   private String presentation;
 
    @NotBlank
    @Size(min = 6, max = 40)

@@ -2,15 +2,9 @@ package com.Shop.briefShop.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @NoArgsConstructor
 @Data
@@ -26,8 +20,8 @@ public class User {
 	private String username;
 	private String email;
 	private String presentation;
-	private String password;
 	private Long roleId;
+	private String password;
 
 	public User(String username, String email, String presentation, String password) {
 		this.username = username;
