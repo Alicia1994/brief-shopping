@@ -10,17 +10,16 @@ import com.Shop.briefShop.repositorys.RoleRepository;
 import com.Shop.briefShop.repositorys.UserRepository;
 import com.Shop.briefShop.security.services.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -91,6 +90,22 @@ import java.util.Set;
         }else {
             return null;
         }
+    }
+
+    @PostMapping("/user/updatePassword")
+    public ResponseEntity<String> changeUserPassword(Locale locale,
+                                              @RequestParam("password") String password,
+                                              @RequestParam("oldpassword") String oldPassword) {
+        User user = userRepository.findByUsername(
+                SecurityContextHolder.getContext().getAuthentication().getName()).get();
+
+        if (!userService.checkIfValidOldPassword(user, oldPassword)) {
+            return new ResponseEntity<String>("update ok", HttpStatus.OK);
+        }
+        userService.changeUserPassword(user, password);
+//        return new GenericResponse(messages.getMessage("message.updatePasswordSuc", null, locale));
+        return new ResponseEntity<String>("Ce Projet ne vous appartient pas; Vous ne pourrez pas le modifier", HttpStatus.FORBIDDEN);
+
     }
 
     @PreAuthorize("hasRole('ADMIN')")

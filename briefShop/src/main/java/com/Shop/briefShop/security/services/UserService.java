@@ -10,6 +10,8 @@ public interface UserService {
     Optional<User> getUser(Long id);
     User saveUser(User u);
     User createNewEmployé(User user, String username);
+    boolean checkIfValidOldPassword(final User user, final String oldPassword);
+    void changeUserPassword(final User user, final String password);
     User updateUser(UserUpdateDto userUpdateDto);
     void deleteUser(Long id);
 }

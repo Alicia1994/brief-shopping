@@ -9,6 +9,7 @@ import com.Shop.briefShop.repositorys.UserRepository;
 import com.Shop.briefShop.security.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,6 +22,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
     private final ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    PasswordEncoder encoder;
+
 
     public User createNewEmployé(User user, String username){
         Optional<User> userOptional = userRepository.findByUsername(username);
@@ -52,6 +56,18 @@ public class UserServiceImpl implements UserService {
     public User updateUser(UserUpdateDto userUpdateDto){
         User user = modelMapper.map(userUpdateDto, User.class);
         return userRepository.save(user);
+    }
+
+
+    @Override
+    public void changeUserPassword(final User user, final String password) {
+        user.setPassword(encoder.encode(password));
+        userRepository.save(user);
+    }
+
+    @Override
+    public boolean checkIfValidOldPassword(final User user, final String oldPassword) {
+        return encoder.matches(oldPassword, user.getPassword());
     }
 
     @Override
