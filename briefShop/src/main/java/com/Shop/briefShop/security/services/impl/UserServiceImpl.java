@@ -1,5 +1,6 @@
 package com.Shop.briefShop.security.services.impl;
 
+import com.Shop.briefShop.dto.UserUpdateDto;
 import com.Shop.briefShop.models.ERole;
 import com.Shop.briefShop.models.Role;
 import com.Shop.briefShop.models.User;
@@ -45,6 +46,12 @@ public class UserServiceImpl implements UserService {
     public User saveUser(User u) {
         User save = userRepository.save(u);
         return save;
+    }
+
+    @Override
+    public User updateUser(UserUpdateDto userUpdateDto){
+        User user = modelMapper.map(userUpdateDto, User.class);
+        return userRepository.save(user);
     }
 
     @Override
