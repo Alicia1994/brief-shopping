@@ -1,6 +1,7 @@
 package com.Shop.briefShop.controllers;
 
 import com.Shop.briefShop.dto.UserUpdateDto;
+
 import com.Shop.briefShop.models.ERole;
 import com.Shop.briefShop.models.Role;
 import com.Shop.briefShop.models.User;
@@ -16,7 +17,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -51,6 +51,7 @@ import java.util.*;
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
+
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 signUpRequest.getPresentation(),
@@ -58,7 +59,7 @@ import java.util.*;
         );
 
         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN).get();
-        user.setRoleId(adminRole.getId());
+        user.setRole(adminRole.getName().name());
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("New Employer registered successfully!"));
@@ -79,10 +80,20 @@ import java.util.*;
         }
     }
 
+    @GetMapping("/role/{id}")
+    public Role getRole(@PathVariable("id") final Long id) {
+        Optional<Role> user = roleRepository.findById(id);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            return null;
+        }
+    }
+
     @PutMapping("/update/{id}")
     public User updateUser(@RequestBody UserUpdateDto userUpdateDto){
         Optional <User> optionalUser = userService.getUser(userUpdateDto.getId());
-        userUpdateDto.setRoleId(optionalUser.get().getRoleId());
+        userUpdateDto.setRole(optionalUser.get().getRole());
         userUpdateDto.setId(optionalUser.get().getId());
 
         if(optionalUser.isPresent()){

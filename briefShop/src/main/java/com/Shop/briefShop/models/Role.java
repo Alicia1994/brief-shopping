@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "roles")
+@Table(name = "role")
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class Role {
 	@Column(length = 20)
 	private ERole name;
 
-	@OneToMany(orphanRemoval = true, mappedBy = "roleId", cascade = CascadeType.ALL)
+	@OneToMany(orphanRemoval = true, mappedBy = "role", cascade = CascadeType.ALL)
 	private Set<User> users = new HashSet<>();
 
 }

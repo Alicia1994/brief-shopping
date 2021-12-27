@@ -20,10 +20,10 @@ public class UserDetailsImpl implements UserDetails {
 	private String presentation;
 	@JsonIgnore
 	private String password;
-	private Long authorities;
+	private String authorities;
 
 	public UserDetailsImpl(Long id, String username, String email, String presentation, String password,
-			Long authorities) {
+			String authorities) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
@@ -33,7 +33,9 @@ public class UserDetailsImpl implements UserDetails {
 	}
 
 	public static UserDetailsImpl build(User user) {
-		Long authorities = user.getRoleId();
+//		Long authorities = user.getRoleId();
+		String authorities = user.getRole();
+
 
 		return new UserDetailsImpl(
 				user.getId(), 
@@ -56,7 +58,7 @@ public class UserDetailsImpl implements UserDetails {
 		return presentation;
 	}
 
-	public Long getRole(){
+	public String getRole(){
 		return authorities;
 	}
 

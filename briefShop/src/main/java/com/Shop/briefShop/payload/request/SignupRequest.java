@@ -17,7 +17,8 @@ public class SignupRequest {
    @Email
    private String email;
 
-   private Long roleId;
+//   private Long roleId;
+   private String role;
 
    private String presentation;
 

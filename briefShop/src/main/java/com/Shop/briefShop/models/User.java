@@ -19,7 +19,8 @@ public class User {
 	private String username;
 	private String email;
 	private String presentation;
-	private Long roleId;
+	private String role;
+//	private Long roleId;
 	private String password;
 
 	public User(String username, String email, String presentation, String password) {
@@ -29,11 +30,12 @@ public class User {
 		this.password = password;
 	}
 
-	public User(String username, String email, String presentation, Long role, String encode) {
+	public User(String username, String email, String presentation, String role, String encode) {
 	this.username = username;
 		this.email = email;
 		this.presentation = presentation;
-		this.roleId = role;
+//		this.roleId = role;
+		this.role = role;
 		this.password = encode;
 
 	}

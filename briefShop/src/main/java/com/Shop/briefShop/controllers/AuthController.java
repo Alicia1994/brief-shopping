@@ -21,6 +21,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -51,7 +55,7 @@ public class AuthController {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        Long roles = userDetails.getRole();
+        String roles = userDetails.getRole();
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
@@ -78,11 +82,88 @@ public class AuthController {
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 signUpRequest.getPresentation(),
-                signUpRequest.getRoleId(),
+                encoder.encode(signUpRequest.getPassword()));
+
+        String role = signUpRequest.getRole();
+        Role roles = null;
+        if (role.isEmpty()) {
+            Role clientRole = roleRepository.findByName(ERole.ROLE_CLIENT)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles = clientRole;
+        } else {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error: Role mod is not found."));
+                        roles = adminRole;
+                        break;
+                    case "employer":
+                        Role entrRole = roleRepository.findByName(ERole.ROLE_EMPLOYE)
+                                .orElseThrow(() -> new RuntimeException("Error: Role mod is not found."));
+                        roles = entrRole;
+                        break;
+                    case "client":
+                        Role investRole = roleRepository.findByName(ERole.ROLE_CLIENT)
+                                .orElseThrow(() -> new RuntimeException("Error: Role user is not found."));
+                        roles = investRole;
+                        break;
+                    default:
+                        Role userRole = roleRepository.findByName(ERole.ROLE_CLIENT)
+                                .orElseThrow(() -> new RuntimeException("Error: Role user is not found."));
+                        roles = userRole;
+
+                        break;
+                }
+            };
+            user.setRole(roles.getName().name());
+            userRepository.save(user);
+
+            return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        }
+}
+
+       /*
+
+        if (strRoles.isEmpty()) {
+            Role clientRole = roleRepository.findByName(ERole.ROLE_CLIENT)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(clientRole);
+        } else {
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "entrepreneur":
+                        Role entrRole = roleRepository.findByName(ERole.ROLE_EMPLOYE)
+                                .orElseThrow(() -> new RuntimeException("Error: Role mod is not found."));
+                        roles.add(entrRole);
+                        break;
+                    case "investisseur":
+                        Role investRole = roleRepository.findByName(ERole.ROLE_CLIENT)
+                                .orElseThrow(() -> new RuntimeException("Error: Role user is not found."));
+                        roles.add(investRole);
+                        break;
+                    default:
+                        Role userRole = roleRepository.findByName(ERole.ROLE_CLIENT)
+                                .orElseThrow(() -> new RuntimeException("Error: Role user is not found."));
+                        roles.add(userRole);
+
+                        break;
+                }
+            });
+        }
+        user.setRole(roles);
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));*/
+//    }
+//    }
+        /*User user = new User(signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                signUpRequest.getPresentation(),
+//                signUpRequest.getRoleId(),
                 encoder.encode(signUpRequest.getPassword()));
 
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-}
+}*/

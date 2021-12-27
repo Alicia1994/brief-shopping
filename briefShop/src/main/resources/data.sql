@@ -1,7 +1,7 @@
-INSERT INTO roles (name) VALUES
+INSERT INTO role (name) VALUES
 ('ROLE_EMPLOYE'),
 ('ROLE_ADMIN'),
-('ROLE_INTERNAUTE');
+('ROLE_CLIENT');
 
 --    select 1 ;
 --select * from role;
