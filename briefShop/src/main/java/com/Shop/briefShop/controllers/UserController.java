@@ -84,7 +84,10 @@ import java.util.*;
     public Role getRole(@PathVariable("id") final Long id) {
         Optional<Role> user = roleRepository.findById(id);
         if (user.isPresent()) {
+            Set list = user.get().getUsers();
+            System.out.println(list);
             return user.get();
+
         } else {
             return null;
         }

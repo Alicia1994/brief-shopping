@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -89,81 +90,58 @@ public class AuthController {
         if (role.isEmpty()) {
             Role clientRole = roleRepository.findByName(ERole.ROLE_CLIENT)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles = clientRole;
+            user.setRole(clientRole.getName().name());
+            clientRole.getUsers().add(user);
         } else {
                 switch (role) {
                     case "admin":
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role mod is not found."));
                         roles = adminRole;
+                        Optional<Role> roleOptional = roleRepository.findByName(ERole.ROLE_ADMIN);
+
+                        System.out.println(roles);
+                        user.setRole(roleOptional.get().getName().name());
+//                        user.setRole(adminRole.getName().name());
+                        roles.getUsers().add(user);
+                        System.out.println(roles);
                         break;
+
                     case "employer":
                         Role entrRole = roleRepository.findByName(ERole.ROLE_EMPLOYE)
                                 .orElseThrow(() -> new RuntimeException("Error: Role mod is not found."));
                         roles = entrRole;
+                        System.out.println(roles);
+                        user.setRole(entrRole.getName().name());
+                        roles.getUsers().add(user);
+                        System.out.println(roles);
                         break;
+
                     case "client":
                         Role investRole = roleRepository.findByName(ERole.ROLE_CLIENT)
                                 .orElseThrow(() -> new RuntimeException("Error: Role user is not found."));
                         roles = investRole;
+                        System.out.println(roles);
+                        user.setRole(roles.getName().name());
+                        roles.getUsers().add(user);
+                        System.out.println(roles);
                         break;
+
                     default:
                         Role userRole = roleRepository.findByName(ERole.ROLE_CLIENT)
                                 .orElseThrow(() -> new RuntimeException("Error: Role user is not found."));
                         roles = userRole;
-
+                        System.out.println(roles);
+                        user.setRole(userRole.getName().name());
+                        roles.getUsers().add(user);
+                        System.out.println(roles);
                         break;
                 }
-            };
-            user.setRole(roles.getName().name());
-            userRepository.save(user);
+        };
 
-            return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        userRepository.save(user);
+//        System.out.println(roles);
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
         }
 }
-
-       /*
-
-        if (strRoles.isEmpty()) {
-            Role clientRole = roleRepository.findByName(ERole.ROLE_CLIENT)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(clientRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "entrepreneur":
-                        Role entrRole = roleRepository.findByName(ERole.ROLE_EMPLOYE)
-                                .orElseThrow(() -> new RuntimeException("Error: Role mod is not found."));
-                        roles.add(entrRole);
-                        break;
-                    case "investisseur":
-                        Role investRole = roleRepository.findByName(ERole.ROLE_CLIENT)
-                                .orElseThrow(() -> new RuntimeException("Error: Role user is not found."));
-                        roles.add(investRole);
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_CLIENT)
-                                .orElseThrow(() -> new RuntimeException("Error: Role user is not found."));
-                        roles.add(userRole);
-
-                        break;
-                }
-            });
-        }
-        user.setRole(roles);
-        userRepository.save(user);
-
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));*/
-//    }
-//    }
-        /*User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                signUpRequest.getPresentation(),
-//                signUpRequest.getRoleId(),
-                encoder.encode(signUpRequest.getPassword()));
-
-        userRepository.save(user);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-    }
-
-}*/
