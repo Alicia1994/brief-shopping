@@ -87,13 +87,26 @@ public class AuthController {
 
         String role = signUpRequest.getRole();
         Role roles = null;
+//        Set<String> strRoles = signUpRequest.getRole();
+//        Set<User> users = new HashSet<>();
+
         if (role.isEmpty()) {
             Role clientRole = roleRepository.findByName(ERole.ROLE_CLIENT)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             user.setRole(clientRole.getName().name());
             clientRole.getUsers().add(user);
+//            roleRepository.save(clientRole);
         } else {
-                switch (role) {
+//            signupRequest.getRole().forEach(role -> {
+                Role currentRole = roleRepository.findByName(ERole.valueOf(role))
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                user.setRole(currentRole.getName().name());
+                currentRole.getUsers().add(user);
+            System.out.println(currentRole);
+//            roleRepository.save(currentRole);
+//            }
+//        );
+                /*switch (role) {
                     case "admin":
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role mod is not found."));
@@ -102,7 +115,7 @@ public class AuthController {
 
                         System.out.println(roles);
                         user.setRole(roleOptional.get().getName().name());
-//                        user.setRole(adminRole.getName().name());
+                        user.setRole(adminRole.getName().name());
                         roles.getUsers().add(user);
                         System.out.println(roles);
                         break;
@@ -136,12 +149,16 @@ public class AuthController {
                         roles.getUsers().add(user);
                         System.out.println(roles);
                         break;
-                }
+                }*/
         };
 
         userRepository.save(user);
-//        System.out.println(roles);
+//        roleRepository.save(roles);
 
+        System.out.println(user);
+        System.out.println(role);
+        System.out.println(roles);
+//
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
         }
 }
